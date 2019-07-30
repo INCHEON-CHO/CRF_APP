@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ContentView"></activity>
+        <activity android:name=".ResultView"></activity>
+        <activity android:name=".ContentView" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

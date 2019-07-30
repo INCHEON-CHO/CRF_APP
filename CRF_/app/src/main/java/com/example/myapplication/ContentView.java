@@ -47,7 +47,7 @@ public class ContentView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content_view);
 
-         iv = (ImageView)findViewById(R.id.imageView);
+         iv = (ImageView)findViewById(R.id.resultview);
 
         Intent intent = getIntent();
         int num = intent.getExtras().getInt("num");
@@ -64,7 +64,7 @@ public class ContentView extends AppCompatActivity {
             default:
         }
 
-        findViewById(R.id.imageView).setOnTouchListener(new View.OnTouchListener() {
+        findViewById(R.id.resultview).setOnTouchListener(new View.OnTouchListener() {
             float floatx, floaty;
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -83,6 +83,14 @@ public class ContentView extends AppCompatActivity {
                 }
         }
         return true;
+            }
+        });
+
+        findViewById(R.id.btn_apply).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ResultView.class);
+                startActivity(intent);
             }
         });
     }
@@ -232,7 +240,7 @@ public class ContentView extends AppCompatActivity {
             }
             this.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(tempFile)));
 
-            ((ImageView)findViewById(R.id.imageView)).setImageBitmap(rotate(bitmap, exifDegree));
+            ((ImageView)findViewById(R.id.resultview)).setImageBitmap(rotate(bitmap, exifDegree));
         }
         else if (requestCode == PICK_FROM_ALBUM) { // 앨범
             Uri photoUri = data.getData();
@@ -250,7 +258,7 @@ public class ContentView extends AppCompatActivity {
 
             bitmap = BitmapFactory.decodeFile(imagePath);
 
-            ((ImageView)findViewById(R.id.imageView)).setImageBitmap(rotate(bitmap, exifDegree));
+            ((ImageView)findViewById(R.id.resultview)).setImageBitmap(rotate(bitmap, exifDegree));
         }
     }
 
