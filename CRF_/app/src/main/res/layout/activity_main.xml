@@ -20,7 +20,7 @@
 
     </com.google.android.material.appbar.AppBarLayout-->
 
-    <include layout="@layout/content_main" />
+    <!--include layout="@layout/content_main" /-->
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/floating_menu"
