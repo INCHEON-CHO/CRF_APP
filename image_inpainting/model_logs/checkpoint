@@ -1,0 +1,2 @@
+model_checkpoint_path: "/content/gdrive/My Drive/Colab Notebooks/model_logs/snap-60000/snap-60000"
+all_model_checkpoint_paths: "/content/gdrive/My Drive/Colab Notebooks/model_logs/snap-60000/snap-60000"
