@@ -23,19 +23,39 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.WeakHashMap;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class ContentView extends AppCompatActivity {
 
     List<Location> LocationArr = new ArrayList<Location>();
     List<Boolean> CheckArr = new ArrayList<Boolean>();
-    private static final String TAG = "blackjin";
+    private static final String TAG = MainActivity.class.getSimpleName();
     private  File tempFile;
     private  String currentPhotoPath;
     private static final int PICK_FROM_CAMERA = 1;
@@ -45,6 +65,8 @@ public class ContentView extends AppCompatActivity {
     private final int GAP = 100;
     private final int WEIGHT = 10;
     private int[] OriginPixels;
+    private byte[] data;
+    private DataOutputStream dos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,6 +231,8 @@ public class ContentView extends AppCompatActivity {
 
         if(requestCode == PICK_FROM_CAMERA){ // 카메라
             bitmap = BitmapFactory.decodeFile(currentPhotoPath);
+            imageTobtye(bitmap);
+
             ExifInterface exif = null;
             try{
                 exif = new ExifInterface(currentPhotoPath);
@@ -248,12 +272,23 @@ public class ContentView extends AppCompatActivity {
             int exifDegree = exifOrientationToDegress(exifOrientation);
 
             bitmap = BitmapFactory.decodeFile(imagePath);
+            imageTobtye(bitmap);
+            //uploadToServer(imagePath);
+
+            downloadToServer();
 
             iv.setImageBitmap(rotate(bitmap, exifDegree));
             Bitmap bit = ((BitmapDrawable)iv.getDrawable()).getBitmap();
             OriginPixels = new int[bit.getWidth() * bit.getHeight()];
             bit.getPixels(OriginPixels, 0, bit.getWidth(), 0, 0, bit.getWidth(), bit.getHeight());
         }
+    }
+
+    private void imageTobtye(Bitmap bit){
+        final int lnth = bit.getByteCount();
+        ByteBuffer dst= ByteBuffer.allocate(lnth);
+        bitmap.copyPixelsToBuffer(dst);
+        data = dst.array();
     }
 
     private void goToAlbum() {
@@ -301,4 +336,121 @@ public class ContentView extends AppCompatActivity {
         }
         return src;
     }
+
+    private void uploadToServer(String filePath) {
+        File file = new File(filePath);
+        Log.d(TAG, "Filename " + file.getName());
+        RequestBody mFile = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), mFile);
+        RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+        /*Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();*/
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(NetworkClient.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        UploadAPIs uploadImage = retrofit.create(UploadAPIs.class);
+        Call<ResponseBody> call = uploadImage.uploadImage(filename, fileToUpload);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "server contacted and has file");
+                } else {
+                    Log.d(TAG, "server contact failed");
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d(TAG, "fail = " + t.getMessage());
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private void downloadToServer(){
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl(NetworkClient.BASE_URL);
+
+        Retrofit retrofit = builder.build();
+
+        UploadAPIs fileDownloadClient = retrofit.create(UploadAPIs.class);
+
+        Call<ResponseBody> call = fileDownloadClient.downloadFile();
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(getApplicationContext(), "success get image", Toast.LENGTH_LONG).show();
+                    boolean success = writeResponseBodyToDisk(response.body());
+                    if(success){
+                        Toast.makeText(getApplicationContext(), "complete get image", Toast.LENGTH_LONG).show();
+                    }
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "fail get image", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "fail connect", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private boolean writeResponseBodyToDisk(ResponseBody body) {
+        try {
+            // todo change the file location/name according to your needs
+            File futureStudioIconFile = new File(getExternalFilesDir(null) + File.separator + "Future Studio Icon.png");
+
+            InputStream inputStream = null;
+            OutputStream outputStream = null;
+
+            try {
+                byte[] fileReader = new byte[4096];
+
+                long fileSize = body.contentLength();
+                long fileSizeDownloaded = 0;
+
+                inputStream = body.byteStream();
+                outputStream = new FileOutputStream(futureStudioIconFile);
+
+                while (true) {
+                    int read = inputStream.read(fileReader);
+
+                    if (read == -1) {
+                        break;
+                    }
+
+                    outputStream.write(fileReader, 0, read);
+
+                    fileSizeDownloaded += read;
+
+                    Log.d(TAG, "file download: " + fileSizeDownloaded + " of " + fileSize);
+                }
+
+                outputStream.flush();
+
+                return true;
+            } catch (IOException e) {
+                return false;
+            } finally {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            }
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+
 }

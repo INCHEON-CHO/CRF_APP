@@ -41,6 +41,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import retrofit2.Call;
+
 public class MainActivity extends AppCompatActivity {
 
     private Boolean isPermission = true;
@@ -54,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //Toolbar toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
-
 
         tedPermission();
         setup();
