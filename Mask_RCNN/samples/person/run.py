@@ -27,6 +27,8 @@ from samples.person import person
 
 from PIL import Image, ImageDraw, ImageFont
 
+
+
 # logs와 trained model이 저장되어있는 Directory
 MODEL_DIR = os.path.join(ROOT_DIR, "logs")
 
@@ -68,7 +70,7 @@ def apply_mask(image, mask, color, alpha=0.5):
                                   image[:, :, c])
     return image
 
-def save_image(image, image_name, boxes, masks, class_ids, scores, class_names, filter_classs_names=None, scores_thresh=0.1, save_dir=None, mode=0):
+def save_image(image, image_name, boxes, masks, class_ids, scores, class_names, filter_classs_names=None, scores_thresh=0.1, save_dir=None, mode=4):
     """
         image: imgae
         image_name: 저장할 이름
@@ -174,20 +176,22 @@ def random_colors(N, bright=True):
     random.shuffle(colors)
     return colors
 
-
+class_names = ['BG', 'person']
+'''
 # Load validation dataset
 dataset = person.personDataset()
 dataset.load_person(PERSON_DIR, "val")
 
 # dataset을 사용하기 전에 반드시 실행해야 함
 dataset.prepare()
-
+'''
 with tf.device(DEVICE):
     model = modellib.MaskRCNN(mode="inference", model_dir=MODEL_DIR,config=config)
     
     
 model.load_weights(BALLON_WEIGHTS_PATH, by_name=True)
 
+start = time.time()
 
 IMAGE_DIR = os.path.join(ROOT_DIR, "images")
 filename=os.path.join(IMAGE_DIR,'image2.png')
@@ -201,6 +205,7 @@ r = results[0]
 
 #visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'],dataset.class_names, r['scores'], ax=ax,title="Predictions")
 
+
+print(time.time() - start)
 #Save results
-class_names = ['BG', 'person']
-save_image(image,"results", r['rois'], r['masks'],r['class_ids'],r['scores'],class_names,filter_classs_names=['person'],scores_thresh=0.9,save_dir="c:/Users/kkh11/Desktop",mode=0)
+save_image(image,"results", r['rois'], r['masks'],r['class_ids'],r['scores'],class_names,filter_classs_names=['person'],scores_thresh=0.9,save_dir="C:\\Users\\gther\\Desktop\\SM\\p1032_ics\\Mask_RCNN\\samples\\person",mode=4)

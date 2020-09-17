@@ -1,0 +1,11 @@
+[INFO  2019-10-11 14:29:23 @__init__.py:79] Set root logger. Unset logger with neuralgym.unset_logger().
+[INFO  2019-10-11 14:29:23 @__init__.py:80] Saving logging to file: neuralgym_logs/20191011142923513984.
+[INFO  2019-10-11 14:29:34 @_internal.py:122]  * Running on http://0.0.0.0:80/ (Press CTRL+C to quit)
+[INFO  2019-10-11 14:31:33 @_internal.py:122] 127.0.0.1 - - [11/Oct/2019 14:31:33] "[37mGET / HTTP/1.1[0m" 200 -
+[INFO  2019-10-11 14:31:33 @_internal.py:122] 127.0.0.1 - - [11/Oct/2019 14:31:33] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+[INFO  2019-10-11 14:31:33 @_internal.py:122] 127.0.0.1 - - [11/Oct/2019 14:31:33] "[37mGET / HTTP/1.1[0m" 200 -
+[INFO  2019-10-11 14:34:02 @_internal.py:122] 172.16.21.23 - - [11/Oct/2019 14:34:02] "[37mGET / HTTP/1.1[0m" 200 -
+[INFO  2019-10-11 14:34:02 @_internal.py:122] 172.16.21.23 - - [11/Oct/2019 14:34:02] "[37mGET / HTTP/1.1[0m" 200 -
+[INFO  2019-10-11 14:34:02 @_internal.py:122] 172.16.21.23 - - [11/Oct/2019 14:34:02] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+[INFO  2019-10-11 14:34:31 @_internal.py:122] 172.16.21.23 - - [11/Oct/2019 14:34:31] "[37mGET / HTTP/1.1[0m" 200 -
+[INFO  2019-10-11 14:34:32 @_internal.py:122] 172.16.21.23 - - [11/Oct/2019 14:34:32] "[37mGET / HTTP/1.1[0m" 200 -

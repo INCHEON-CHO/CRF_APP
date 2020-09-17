@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CRF</string>
+    <string name="app_name">AI지우개</string>
     <string name="action_settings">Settings</string>
 
     <string name="permission_2">"이 앱을 사용하기 위해서는 카메라와 외부 저장소 권한이 필요합니다."</string>

@@ -1,0 +1,20 @@
+[INFO  2019-09-10 19:46:18 @__init__.py:79] Set root logger. Unset logger with neuralgym.unset_logger().
+[INFO  2019-09-10 19:46:18 @__init__.py:80] Saving logging to file: neuralgym_logs/20190910194617952089.
+[INFO  2019-09-10 19:46:31 @_internal.py:122]  * Running on http://0.0.0.0:80/ (Press CTRL+C to quit)
+[INFO  2019-09-10 19:48:53 @_internal.py:122] 172.16.200.185 - - [10/Sep/2019 19:48:53] "[37mPOST /receive HTTP/1.1[0m" 200 -
+[INFO  2019-09-10 19:48:58 @_internal.py:122] 172.16.200.185 - - [10/Sep/2019 19:48:58] "[37mPOST /pass HTTP/1.1[0m" 200 -
+[INFO  2019-09-10 19:49:14 @_internal.py:122] 172.16.200.185 - - [10/Sep/2019 19:49:14] "[37mGET /download HTTP/1.1[0m" 200 -
+[DEBUG 2019-09-10 19:50:03 @PngImagePlugin.py:146] STREAM b'IHDR' 16 13
+[DEBUG 2019-09-10 19:50:03 @PngImagePlugin.py:146] STREAM b'IDAT' 41 8192
+[ERROR 2019-09-10 19:50:03 @app.py:1780] Exception on /insert [POST]
+Traceback (most recent call last):
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\flask\app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\flask\app.py", line 1835, in full_dispatch_request
+    return self.finalize_request(rv)
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\flask\app.py", line 1850, in finalize_request
+    response = self.make_response(rv)
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\flask\app.py", line 1976, in make_response
+    'The view function did not return a valid response. The'
+TypeError: The view function did not return a valid response. The function either returned None or ended without a return statement.
+[INFO  2019-09-10 19:50:03 @_internal.py:122] 172.16.200.185 - - [10/Sep/2019 19:50:03] "[1m[35mPOST /insert HTTP/1.1[0m" 500 -

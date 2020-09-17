@@ -1,0 +1,6 @@
+[INFO  2019-10-07 00:56:24 @__init__.py:79] Set root logger. Unset logger with neuralgym.unset_logger().
+[INFO  2019-10-07 00:56:24 @__init__.py:80] Saving logging to file: neuralgym_logs/20191007005624742703.
+[INFO  2019-10-07 00:56:37 @_internal.py:122]  * Running on http://0.0.0.0:80/ (Press CTRL+C to quit)
+[INFO  2019-10-07 00:57:09 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 00:57:09] "[37mPOST /receive HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 00:57:45 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 00:57:45] "[37mGET /download HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 00:58:01 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 00:58:01] "[37mGET /download HTTP/1.1[0m" 200 -

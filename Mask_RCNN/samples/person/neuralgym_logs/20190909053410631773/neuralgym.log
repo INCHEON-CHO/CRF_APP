@@ -1,0 +1,17 @@
+[INFO  2019-09-09 05:34:10 @__init__.py:79] Set root logger. Unset logger with neuralgym.unset_logger().
+[INFO  2019-09-09 05:34:10 @__init__.py:80] Saving logging to file: neuralgym_logs/20190909053410631773.
+[INFO  2019-09-09 05:34:20 @_internal.py:122]  * Running on http://0.0.0.0:80/ (Press CTRL+C to quit)
+[INFO  2019-09-09 05:34:55 @_internal.py:122] 180.71.27.249 - - [09/Sep/2019 05:34:55] "[37mPOST /receive HTTP/1.1[0m" 200 -
+[INFO  2019-09-09 05:34:59 @_internal.py:122] 180.71.27.249 - - [09/Sep/2019 05:34:59] "[33mGET /insert HTTP/1.1[0m" 404 -
+[INFO  2019-09-09 05:34:59 @_internal.py:122] 180.71.27.249 - - [09/Sep/2019 05:34:59] "[37mPOST /pass HTTP/1.1[0m" 200 -
+[INFO  2019-09-09 05:35:06 @_internal.py:122] 180.71.27.249 - - [09/Sep/2019 05:35:06] "[37mGET /download HTTP/1.1[0m" 200 -
+[INFO  2019-09-09 05:35:14 @_internal.py:122] 180.71.27.249 - - [09/Sep/2019 05:35:14] "[37mGET /download HTTP/1.1[0m" 200 -
+[INFO  2019-09-09 05:35:42 @_internal.py:122] 180.71.27.249 - - [09/Sep/2019 05:35:42] "[33mGET /insert HTTP/1.1[0m" 404 -
+[INFO  2019-09-09 05:35:42 @_internal.py:122] 180.71.27.249 - - [09/Sep/2019 05:35:42] "[37mPOST /pass HTTP/1.1[0m" 200 -
+[INFO  2019-09-09 05:35:49 @_internal.py:122] 180.71.27.249 - - [09/Sep/2019 05:35:49] "[37mGET /download HTTP/1.1[0m" 200 -
+[INFO  2019-09-09 05:35:57 @_internal.py:122] 180.71.27.249 - - [09/Sep/2019 05:35:57] "[37mGET /download HTTP/1.1[0m" 200 -
+[INFO  2019-09-09 05:37:53 @_internal.py:122] 180.71.27.249 - - [09/Sep/2019 05:37:53] "[37mPOST /receive HTTP/1.1[0m" 200 -
+[INFO  2019-09-09 05:37:59 @_internal.py:122] 180.71.27.249 - - [09/Sep/2019 05:37:59] "[33mGET /insert HTTP/1.1[0m" 404 -
+[INFO  2019-09-09 05:37:59 @_internal.py:122] 180.71.27.249 - - [09/Sep/2019 05:37:59] "[37mPOST /pass HTTP/1.1[0m" 200 -
+[INFO  2019-09-09 05:38:05 @_internal.py:122] 180.71.27.249 - - [09/Sep/2019 05:38:05] "[37mGET /download HTTP/1.1[0m" 200 -
+[INFO  2019-09-09 05:38:13 @_internal.py:122] 180.71.27.249 - - [09/Sep/2019 05:38:13] "[37mGET /download HTTP/1.1[0m" 200 -

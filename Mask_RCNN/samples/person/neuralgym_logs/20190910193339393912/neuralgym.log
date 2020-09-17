@@ -1,0 +1,96 @@
+[INFO  2019-09-10 19:33:39 @__init__.py:79] Set root logger. Unset logger with neuralgym.unset_logger().
+[INFO  2019-09-10 19:33:39 @__init__.py:80] Saving logging to file: neuralgym_logs/20190910193339393912.
+[INFO  2019-09-10 19:33:54 @_internal.py:122]  * Running on http://0.0.0.0:80/ (Press CTRL+C to quit)
+[INFO  2019-09-10 19:34:25 @_internal.py:122] 172.16.200.185 - - [10/Sep/2019 19:34:25] "[37mPOST /receive HTTP/1.1[0m" 200 -
+[ERROR 2019-09-10 19:34:35 @app.py:1780] Exception on /pass [POST]
+Traceback (most recent call last):
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\sqlalchemy\engine\base.py", line 1249, in _execute_context
+    cursor, statement, parameters, context
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\sqlalchemy\engine\default.py", line 552, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\pymysql\connections.py", line 517, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\pymysql\connections.py", line 732, in _read_query_result
+    result.read()
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\pymysql\connections.py", line 1075, in read
+    first_packet = self.connection._read_packet()
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\pymysql\connections.py", line 684, in _read_packet
+    packet.check_error()
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\pymysql\protocol.py", line 220, in check_error
+    err.raise_mysql_exception(self._data)
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\pymysql\err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.DataError: (1406, "Data too long for column 'image' at row 1")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\flask\app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\flask\app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\flask\app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\flask\_compat.py", line 36, in reraise
+    raise value
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\flask\app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\flask\app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 274, in GetFile
+    img_df.to_sql(name="object_detection_dataset", con=engine, if_exists='append', index=False)
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\pandas\core\generic.py", line 2712, in to_sql
+    method=method,
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\pandas\io\sql.py", line 518, in to_sql
+    method=method,
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\pandas\io\sql.py", line 1320, in to_sql
+    table.insert(chunksize, method=method)
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\pandas\io\sql.py", line 756, in insert
+    exec_insert(conn, keys, chunk_iter)
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\pandas\io\sql.py", line 670, in _execute_insert
+    conn.execute(self.table.insert(), data)
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\sqlalchemy\engine\base.py", line 988, in execute
+    return meth(self, multiparams, params)
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\sqlalchemy\sql\elements.py", line 287, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\sqlalchemy\engine\base.py", line 1107, in _execute_clauseelement
+    distilled_params,
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\sqlalchemy\engine\base.py", line 1253, in _execute_context
+    e, statement, parameters, cursor, context
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\sqlalchemy\engine\base.py", line 1473, in _handle_dbapi_exception
+    util.raise_from_cause(sqlalchemy_exception, exc_info)
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\sqlalchemy\util\compat.py", line 398, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\sqlalchemy\util\compat.py", line 152, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\sqlalchemy\engine\base.py", line 1249, in _execute_context
+    cursor, statement, parameters, context
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\sqlalchemy\engine\default.py", line 552, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\pymysql\cursors.py", line 170, in execute
+    result = self._query(query)
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\pymysql\cursors.py", line 328, in _query
+    conn.query(q)
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\pymysql\connections.py", line 517, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\pymysql\connections.py", line 732, in _read_query_result
+    result.read()
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\pymysql\connections.py", line 1075, in read
+    first_packet = self.connection._read_packet()
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\pymysql\connections.py", line 684, in _read_packet
+    packet.check_error()
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\pymysql\protocol.py", line 220, in check_error
+    err.raise_mysql_exception(self._data)
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\pymysql\err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+sqlalchemy.exc.DataError: (pymysql.err.DataError) (1406, "Data too long for column 'image' at row 1")
+[SQL: INSERT INTO object_detection_dataset (image) VALUES (%(image)s)]
+[parameters: {'image': b'/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIy ... (80203 characters truncated) ... rUlKKAMy1nNlL5Mn+pY8H+6f8K1Miqt3bLMhIHNQWNyY2+zTH/cJ/lTBGiOaaetPpnU0gG96B0peKQigAA4pR0oH3aTtmgBQSDUinNRUobBoAc0WBlenpUfarCPTJI/4l/EUARKe1Bo70GgD/2Q=='}]
+(Background on this error at: http://sqlalche.me/e/9h9h)
+[INFO  2019-09-10 19:34:36 @_internal.py:122] 172.16.200.185 - - [10/Sep/2019 19:34:36] "[1m[35mPOST /pass HTTP/1.1[0m" 500 -
+[INFO  2019-09-10 19:34:56 @_internal.py:122] 172.16.200.185 - - [10/Sep/2019 19:34:56] "[37mGET /download HTTP/1.1[0m" 200 -
+[INFO  2019-09-10 19:35:17 @_internal.py:122] 172.16.200.185 - - [10/Sep/2019 19:35:17] "[37mGET /download HTTP/1.1[0m" 200 -

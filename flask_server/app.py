@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, send_file
 from werkzeug import secure_filename
-import json, io
+import json, io, skimage.io, os
 app = Flask(__name__)
 
 
@@ -20,7 +20,12 @@ def getFile():
     if request.method == 'POST':
         file = request.files['file']
         print("get files")
-        file.save(secure_filename(file.filename))
+        Filename = secure_filename(file.filename)
+        file.save(Filename)
+        #path = os.path.dirname(os.path.realpath(__file__)) + "\\" + Filename
+        #path = os.path.dirname(os.path.realpath(__file__)) + "\\images.jpg"
+        #result = skimage.io.imread(path)
+        #location = (result[0])['rois']  
         """
             객체 좌표 전달
         """
@@ -30,7 +35,7 @@ def getFile():
 
 @app.route('/download')
 def downloadFile():
-    return send_file('C:\\Users\\gther\\Desktop\\flask\\IMG_044911.jpg', attachment_filename="image.jpg")
+    return send_file('C:\\Users\\gther\\OneDrive\\Desktop\\CRF_APP\\flask_server\\IMG_083453.jpg')
 
     
 

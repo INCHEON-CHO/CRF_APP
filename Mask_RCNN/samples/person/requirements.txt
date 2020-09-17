@@ -1,0 +1,16 @@
+setuptools
+numpy
+flask
+werkzeug
+pandas
+scikit-image
+sqlalchemy
+git+https://github.com/JiahuiYu/neuralgym
+tensorflow==1.14
+matplotlib
+scipy
+opencv-python
+pyyaml
+IPython
+keras
+pymysql

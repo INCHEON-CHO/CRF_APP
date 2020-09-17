@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -20,14 +21,20 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,9 +47,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.WeakHashMap;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -51,22 +60,23 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ContentView extends AppCompatActivity {
+public class ContentView extends AppCompatActivity{
 
-    List<Location> LocationArr = new ArrayList<Location>();
-    List<Boolean> CheckArr = new ArrayList<Boolean>();
-    private static final String TAG = MainActivity.class.getSimpleName();
+    public static List<Location> LocationArr = new ArrayList<Location>();
+    public static List<Boolean> CheckArr = new ArrayList<Boolean>();
+    public static final String TAG = MainActivity.class.getSimpleName();
     private  File tempFile;
     private  String currentPhotoPath;
+    private static ProgressDialog progressDialog;
     private static final int PICK_FROM_CAMERA = 1;
     private static final int PICK_FROM_ALBUM = 2;
     private  Bitmap bitmap;
-    private ImageView iv;
-    private final int GAP = 100;
-    private final int WEIGHT = 10;
-    private int[] OriginPixels;
-    private byte[] data;
-    private DataOutputStream dos;
+    public static ImageView iv;
+    public static Switch option_switch;
+    private final int GAP = 10;
+    public static final int WEIGHT = 5;
+    public static int[] OriginPixels;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,24 +84,23 @@ public class ContentView extends AppCompatActivity {
         setContentView(R.layout.activity_content_view);
 
          iv = (ImageView)findViewById(R.id.contentview);
+         option_switch = (Switch)(findViewById(R.id.switch1));
+         progressDialog = new ProgressDialog(this);
 
         Intent intent = getIntent();
         int num = intent.getExtras().getInt("num");
 
         switch(num){
             case PICK_FROM_CAMERA:
-                LocationArr.add(new Location(522,334, 354,64));
-                CheckArr.add(false);
                 takePhoto();
                 break;
             case PICK_FROM_ALBUM:
-                LocationArr.add(new Location(522,334, 354,64));
-                CheckArr.add(false);
                 goToAlbum();
                 break;
             default:
         }
 
+        // 객체를 터치했을 때 표시해줌
         findViewById(R.id.contentview).setOnTouchListener(new View.OnTouchListener() {
             float floatx, floaty;
                 @Override
@@ -99,11 +108,11 @@ public class ContentView extends AppCompatActivity {
                     if(motionEvent.getAction() == MotionEvent.ACTION_UP){
                         floatx = motionEvent.getX();
                         floaty = motionEvent.getY();
-                        Toast.makeText(getApplicationContext(), floatx + " " + floaty, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), floatx + " " + floaty, Toast.LENGTH_SHORT).show();
 
                         for(int i = 0 ; i < LocationArr.size(); i++){
-                            if((LocationArr.get(i).getfloatXup() + GAP >= floatx || LocationArr.get(i).getfloatXdown() - GAP <= floatx) &&
-                                (LocationArr.get(i).getfloatYup() + GAP >= floaty || LocationArr.get(i).getfloatYdown() - GAP <= floaty)){
+                            if((LocationArr.get(i).getfloatXup() + GAP >= floatx && LocationArr.get(i).getfloatXdown() - GAP <= floatx) &&
+                                (LocationArr.get(i).getfloatYup() + GAP >= floaty && LocationArr.get(i).getfloatYdown() - GAP <= floaty)){
                                 Bitmap bit = ((BitmapDrawable)iv.getDrawable()).getBitmap();
                                 Bitmap ModifiedBitmap = changeColor(bit, LocationArr.get(i).getfloatXup(), LocationArr.get(i).getfloatXdown(),
                                         LocationArr.get(i).getfloatYup(), LocationArr.get(i).getfloatYdown(), CheckArr.get(i));
@@ -115,12 +124,27 @@ public class ContentView extends AppCompatActivity {
         return true;
             }
         });
-
+        // 다음 화면으로 전환
         findViewById(R.id.btn_apply).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //화면 전환
                 Intent intent = new Intent(getApplicationContext(), ResultView.class);
                 startActivity(intent);
+            }
+        });
+
+        option_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(!b){ // 선택 삭제일 때
+                    option_switch.setText("선택 삭제");
+                    Toast.makeText(getApplicationContext(), "삭제할 객체를 선택하세요", Toast.LENGTH_SHORT).show();
+                }
+                else{ //일괄 삭제일 때
+                    option_switch.setText("일괄 삭제");
+                    Toast.makeText(getApplicationContext(), "남겨질 객체를 선택하세요", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -196,17 +220,9 @@ public class ContentView extends AppCompatActivity {
         String timeStamp = new SimpleDateFormat("HHmmss", java.util.Locale.getDefault()).format(new Date());
         String imageFileName = "IMG_" + timeStamp + ".jpg";
 
-        // 이미지가 저장될 폴더 이름 ( blackJin )
-        File Dir = new File(Environment.getExternalStorageDirectory() + "/DCIM/Camera/");
-        //File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "/");
-        //File storageDir = new File(Environment.getExternalStorageDirectory()+ "/blackJin/");
-        //File storageDir = new File(Environment.getExternalStoragePublicDirectory());
-        if (!Dir.exists()) Dir.mkdirs();
-
         // 빈 파일 생성
         File storageDir = new File(Environment.getExternalStorageDirectory().getAbsoluteFile() + "/DCIM/Camera/" + imageFileName);
         currentPhotoPath = storageDir.getAbsolutePath();
-        //File image = File.createTempFile(imageFileName, ".jpg", storageDir);
 
         return storageDir;
     }
@@ -216,7 +232,6 @@ public class ContentView extends AppCompatActivity {
         if (resultCode != Activity.RESULT_OK) {
 
             Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
-
             if(tempFile != null) {
                 if (tempFile.exists()) {
                     if (tempFile.delete()) {
@@ -228,10 +243,12 @@ public class ContentView extends AppCompatActivity {
             finish();
             return;
         }
-
-        if(requestCode == PICK_FROM_CAMERA){ // 카메라
+        //카메라
+        if(requestCode == PICK_FROM_CAMERA){
+            //bitmap 가져오기
             bitmap = BitmapFactory.decodeFile(currentPhotoPath);
-            imageTobtye(bitmap);
+            //서버로 전송
+            uploadToServer(currentPhotoPath);
 
             ExifInterface exif = null;
             try{
@@ -252,12 +269,15 @@ public class ContentView extends AppCompatActivity {
             }
             this.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(tempFile)));
 
+            //imageview에 표시
             iv.setImageBitmap(rotate(bitmap, exifDegree));
+            //원본 bitmap 픽셀 저장
             Bitmap bit = ((BitmapDrawable)iv.getDrawable()).getBitmap();
             OriginPixels = new int[bit.getWidth() * bit.getHeight()];
             bit.getPixels(OriginPixels, 0, bit.getWidth(), 0, 0, bit.getWidth(), bit.getHeight());
         }
-        else if (requestCode == PICK_FROM_ALBUM) { // 앨범
+        //앨범
+        else if (requestCode == PICK_FROM_ALBUM) {
             Uri photoUri = data.getData();
             Log.d(TAG, "PICK_FROM_ALBUM photoUri : " + photoUri);
 
@@ -272,23 +292,14 @@ public class ContentView extends AppCompatActivity {
             int exifDegree = exifOrientationToDegress(exifOrientation);
 
             bitmap = BitmapFactory.decodeFile(imagePath);
-            imageTobtye(bitmap);
-            //uploadToServer(imagePath);
 
-            downloadToServer();
+            uploadToServer(imagePath);
 
             iv.setImageBitmap(rotate(bitmap, exifDegree));
             Bitmap bit = ((BitmapDrawable)iv.getDrawable()).getBitmap();
             OriginPixels = new int[bit.getWidth() * bit.getHeight()];
             bit.getPixels(OriginPixels, 0, bit.getWidth(), 0, 0, bit.getWidth(), bit.getHeight());
         }
-    }
-
-    private void imageTobtye(Bitmap bit){
-        final int lnth = bit.getByteCount();
-        ByteBuffer dst= ByteBuffer.allocate(lnth);
-        bitmap.copyPixelsToBuffer(dst);
-        data = dst.array();
     }
 
     private void goToAlbum() {
@@ -337,120 +348,81 @@ public class ContentView extends AppCompatActivity {
         return src;
     }
 
-    private void uploadToServer(String filePath) {
+    public static void uploadToServer(String filePath) {
         File file = new File(filePath);
         Log.d(TAG, "Filename " + file.getName());
         RequestBody mFile = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), mFile);
         RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
-        /*Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();*/
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(NetworkClient.BASE_URL)
+                .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         UploadAPIs uploadImage = retrofit.create(UploadAPIs.class);
         Call<ResponseBody> call = uploadImage.uploadImage(filename, fileToUpload);
+
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     Log.d(TAG, "server contacted and has file");
+                    try {
+                        //JsonObject jsonObject = new JsonObject().get(response.body().toString()).getAsJsonObject();
+                        assert response.body() != null;
+                        String info = response.body().string();
+                        info = info.replaceAll("\\[", "").replaceAll("]", "");;
+                        ArrayList<Float> temp = new ArrayList<Float>();
+                        while(info.length() != 0){
+                            if(info.contains(",")){
+                                temp.add(Float.parseFloat(info.substring(0, info.indexOf(","))));
+                                info = info.substring(info.indexOf(",") + 1);
+                            }
+                            else{
+                                temp.add(Float.parseFloat(info));
+                                info = "";
+                            }
+                            if(temp.size() == 4){
+                                LocationArr.add(new Location(temp.get(3), temp.get(2), temp.get(1),temp.get(0)));
+                                CheckArr.add(false);
+                                temp.clear();
+                            }
+                        }
+                    }catch (NullPointerException E){
+                        E.printStackTrace();
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                    for(int i = 0 ; i < LocationArr.size(); i++){
+                        Log.d(TAG, Float.toString(LocationArr.get(i).getfloatXdown()) + " " +
+                                Float.toString(LocationArr.get(i).getfloatXup()) + " " +
+                                Float.toString(LocationArr.get(i).getfloatYdown()) + " " +
+                                Float.toString(LocationArr.get(i).getfloatYup()));
+                    }
+                    progressDialog.dismiss();
+                    Log.d(TAG, "Complete");
                 } else {
                     Log.d(TAG, "server contact failed");
+                    progressDialog.dismiss();
                 }
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.d(TAG, "fail = " + t.getMessage());
                 t.printStackTrace();
+                progressDialog.dismiss();
             }
         });
     }
-
-    private void downloadToServer(){
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl(NetworkClient.BASE_URL);
-
-        Retrofit retrofit = builder.build();
-
-        UploadAPIs fileDownloadClient = retrofit.create(UploadAPIs.class);
-
-        Call<ResponseBody> call = fileDownloadClient.downloadFile();
-
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if(response.isSuccessful()){
-                    Toast.makeText(getApplicationContext(), "success get image", Toast.LENGTH_LONG).show();
-                    boolean success = writeResponseBodyToDisk(response.body());
-                    if(success){
-                        Toast.makeText(getApplicationContext(), "complete get image", Toast.LENGTH_LONG).show();
-                    }
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "fail get image", Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "fail connect", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    private boolean writeResponseBodyToDisk(ResponseBody body) {
-        try {
-            // todo change the file location/name according to your needs
-            File futureStudioIconFile = new File(getExternalFilesDir(null) + File.separator + "Future Studio Icon.png");
-
-            InputStream inputStream = null;
-            OutputStream outputStream = null;
-
-            try {
-                byte[] fileReader = new byte[4096];
-
-                long fileSize = body.contentLength();
-                long fileSizeDownloaded = 0;
-
-                inputStream = body.byteStream();
-                outputStream = new FileOutputStream(futureStudioIconFile);
-
-                while (true) {
-                    int read = inputStream.read(fileReader);
-
-                    if (read == -1) {
-                        break;
-                    }
-
-                    outputStream.write(fileReader, 0, read);
-
-                    fileSizeDownloaded += read;
-
-                    Log.d(TAG, "file download: " + fileSizeDownloaded + " of " + fileSize);
-                }
-
-                outputStream.flush();
-
-                return true;
-            } catch (IOException e) {
-                return false;
-            } finally {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-
-                if (outputStream != null) {
-                    outputStream.close();
-                }
-            }
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
-
 }

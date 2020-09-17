@@ -21,7 +21,8 @@
             android:id="@+id/resultview"
             android:layout_width="0dp"
             android:layout_height="445dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:scaleType="fitXY" />
 
     </LinearLayout>
 

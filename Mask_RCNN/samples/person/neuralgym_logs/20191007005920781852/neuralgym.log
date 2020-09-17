@@ -1,0 +1,41 @@
+[INFO  2019-10-07 00:59:20 @__init__.py:79] Set root logger. Unset logger with neuralgym.unset_logger().
+[INFO  2019-10-07 00:59:20 @__init__.py:80] Saving logging to file: neuralgym_logs/20191007005920781852.
+[INFO  2019-10-07 00:59:32 @_internal.py:122]  * Running on http://0.0.0.0:80/ (Press CTRL+C to quit)
+[INFO  2019-10-07 01:00:02 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:00:02] "[37mPOST /receive HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:00:11 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:00:11] "[37mPOST /passMask HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:00:11 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:00:11] "[37mPOST /pass HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:00:26 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:00:26] "[37mGET /download HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:00:42 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:00:42] "[37mGET /download HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:03:02 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:03:02] "[37mPOST /receive HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:03:16 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:03:16] "[37mPOST /pass HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:03:31 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:03:31] "[37mGET /download HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:03:52 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:03:52] "[37mGET /download HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:06:40 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:06:40] "[37mPOST /receive HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:07:23 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:07:23] "[37mPOST /receive HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:07:27 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:07:27] "[37mPOST /passMask HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:07:27 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:07:27] "[37mPOST /pass HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:07:45 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:07:45] "[37mGET /download HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:08:46 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:08:46] "[37mPOST /receive HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:09:05 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:09:05] "[37mPOST /receive HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:09:10 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:09:10] "[37mPOST /passMask HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:09:10 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:09:10] "[37mPOST /pass HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:09:27 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:09:27] "[37mGET /download HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:09:50 @_internal.py:122] 217.57.166.78 - - [07/Oct/2019 01:09:50] "[37mGET / HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:10:26 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:10:26] "[37mPOST /receive HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:11:01 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:11:01] "[37mPOST /pass HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:11:57 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:11:57] "[37mPOST /receive HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:12:01 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:12:01] "[37mPOST /pass HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:14:36 @_internal.py:122] 191.100.10.149 - - [07/Oct/2019 01:14:36] "[37mGET / HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:15:38 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:15:38] "[37mPOST /receive HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:15:57 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:15:57] "[37mPOST /receive HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:16:03 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:16:03] "[37mPOST /pass HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:16:39 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:16:39] "[37mPOST /receive HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:26:35 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:26:35] "[37mPOST /receive HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:26:38 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:26:38] "[37mPOST /pass HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:26:39 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:26:39] "[37mPOST /passMask HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:26:55 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:26:55] "[37mGET /download HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:27:12 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:27:12] "[37mGET /download HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:29:13 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:29:13] "[37mPOST /receive HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:29:23 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:29:23] "[37mPOST /pass HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:29:23 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:29:23] "[37mPOST /passMask HTTP/1.1[0m" 200 -
+[INFO  2019-10-07 01:29:38 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 01:29:38] "[37mGET /download HTTP/1.1[0m" 200 -

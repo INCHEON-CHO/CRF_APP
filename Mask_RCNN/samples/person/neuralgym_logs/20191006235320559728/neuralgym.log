@@ -1,0 +1,23 @@
+[INFO  2019-10-06 23:53:20 @__init__.py:79] Set root logger. Unset logger with neuralgym.unset_logger().
+[INFO  2019-10-06 23:53:20 @__init__.py:80] Saving logging to file: neuralgym_logs/20191006235320559728.
+[INFO  2019-10-06 23:53:36 @_internal.py:122]  * Running on http://0.0.0.0:80/ (Press CTRL+C to quit)
+[INFO  2019-10-07 00:01:56 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 00:01:56] "[37mPOST /receive HTTP/1.1[0m" 200 -
+[ERROR 2019-10-07 00:02:06 @app.py:1780] Exception on /download [GET]
+Traceback (most recent call last):
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\flask\app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\flask\app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\flask\app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\flask\_compat.py", line 36, in reraise
+    raise value
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\flask\app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\gther\AppData\Local\Programs\Python\Python37\lib\site-packages\flask\app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "app.py", line 275, in downloadFile
+    assert image.shape == mask.shape
+AssertionError
+[INFO  2019-10-07 00:02:06 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 00:02:06] "[1m[35mGET /download HTTP/1.1[0m" 500 -
+[INFO  2019-10-07 00:02:06 @_internal.py:122] 192.168.0.1 - - [07/Oct/2019 00:02:06] "[37mPOST /pass HTTP/1.1[0m" 200 -
