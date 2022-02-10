@@ -6,7 +6,7 @@ pandas
 scikit-image
 sqlalchemy
 git+https://github.com/JiahuiYu/neuralgym
-tensorflow==1.14
+tensorflow==2.5.3
 matplotlib
 scipy
 opencv-python
